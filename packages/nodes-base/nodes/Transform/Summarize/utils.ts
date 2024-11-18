@@ -231,7 +231,7 @@ export function splitData(
 	const [firstSplitKey, ...restSplitKeys] = splitKeys;
 
 	const groupedData = data.reduce((acc, item) => {
-		let keyValuee = getValue(item, firstSplitKey) as string;
+		let keyValuee = getValue(item, firstSplitKey) as string; // [ria] is still a number
 
 		if (typeof keyValuee === 'object') {
 			keyValuee = JSON.stringify(keyValuee);
@@ -240,9 +240,9 @@ export function splitData(
 		if (options.skipEmptySplitFields && typeof keyValuee !== 'number' && !keyValuee) {
 			return acc;
 		}
-
+		// [ria] keyValuee is still number at this point
 		if (acc[keyValuee] === undefined) {
-			acc[keyValuee] = [item];
+			acc[keyValuee] = [item]; // [ria] becomes string here
 		} else {
 			(acc[keyValuee] as IDataObject[]).push(item);
 		}

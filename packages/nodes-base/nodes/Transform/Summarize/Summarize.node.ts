@@ -345,6 +345,7 @@ export class Summarize implements INodeType {
 			return [[executionData]];
 		} else {
 			if (!fieldsToSplitBy.length) {
+				// [ria] if no fields to split by
 				const { pairedItems, ...json } = aggregationResult;
 				const executionData: INodeExecutionData = {
 					json,
@@ -354,7 +355,7 @@ export class Summarize implements INodeType {
 				};
 				return [[executionData]];
 			}
-			const returnData = aggregationToArray(aggregationResult, fieldsToSplitBy);
+			const returnData = aggregationToArray(aggregationResult, fieldsToSplitBy); // [ria] change here !!
 			const executionData = returnData.map((item) => {
 				const { pairedItems, ...json } = item;
 				return {
