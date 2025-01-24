@@ -131,4 +131,8 @@ export const defaultSettings: FrontendSettings = {
 	},
 	betaFeatures: [],
 	easyAIWorkflowOnboarded: false,
+	partialExecution: {
+		version: 1,
+		enforce: false,
+	},
 };

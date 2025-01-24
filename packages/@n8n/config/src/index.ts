@@ -13,6 +13,7 @@ import { LicenseConfig } from './configs/license.config';
 import { LoggingConfig } from './configs/logging.config';
 import { MultiMainSetupConfig } from './configs/multi-main-setup.config';
 import { NodesConfig } from './configs/nodes.config';
+import { PartialExecutionsConfig } from './configs/partial-executions.config';
 import { PublicApiConfig } from './configs/public-api.config';
 import { TaskRunnersConfig } from './configs/runners.config';
 import { ScalingModeConfig } from './configs/scaling-mode.config';
@@ -130,4 +131,7 @@ export class GlobalConfig {
 
 	@Nested
 	tags: TagsConfig;
+
+	@Nested
+	partialExecutions: PartialExecutionsConfig;
 }

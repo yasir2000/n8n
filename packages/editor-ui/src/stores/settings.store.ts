@@ -20,6 +20,7 @@ import { useVersionsStore } from './versions.store';
 import { makeRestApiRequest } from '@/utils/apiUtils';
 import { useToast } from '@/composables/useToast';
 import { i18n } from '@/plugins/i18n';
+import { useLocalStorage } from '@vueuse/core';
 
 export const useSettingsStore = defineStore(STORES.SETTINGS, () => {
 	const initialized = ref(false);
@@ -97,6 +98,22 @@ export const useSettingsStore = defineStore(STORES.SETTINGS, () => {
 	const deploymentType = computed(() => settings.value.deployment?.type || 'default');
 
 	const isCloudDeployment = computed(() => settings.value.deployment?.type === 'cloud');
+
+	const partialExecutionVersion = computed(() => {
+		const defaultVersion = settings.value.partialExecution?.version ?? 1;
+		const enforceVersion = settings.value.partialExecution?.enforce ?? false;
+		// -1 means the backend chooses the default
+		// 0 is the old flow
+		// 1 is the new flow
+		const userVersion = useLocalStorage('PartialExecution.version', -1).value;
+		const version = enforceVersion
+			? defaultVersion
+			: userVersion === -1
+				? defaultVersion
+				: userVersion;
+
+		return version;
+	});
 
 	const isAiCreditsEnabled = computed(() => settings.value.aiCredits?.enabled);
 
@@ -448,5 +465,6 @@ export const useSettingsStore = defineStore(STORES.SETTINGS, () => {
 		getSettings,
 		setSettings,
 		initialize,
+		partialExecutionVersion,
 	};
 });

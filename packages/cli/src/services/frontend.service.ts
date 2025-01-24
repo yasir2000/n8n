@@ -233,6 +233,7 @@ export class FrontendService {
 			},
 			betaFeatures: this.frontendConfig.betaFeatures,
 			easyAIWorkflowOnboarded: false,
+			partialExecution: this.globalConfig.partialExecutions,
 		};
 	}
 
