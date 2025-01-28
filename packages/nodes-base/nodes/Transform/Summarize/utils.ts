@@ -75,6 +75,7 @@ function parseReturnData(returnData: IDataObject) {
 }
 
 function parseFieldName(fieldName: string[]) {
+	// [ria] probably here
 	const regexBrackets = /[\]\["]/g;
 	const regexSpaces = /[ .]/g;
 	fieldName = fieldName.map((field) => {
@@ -83,6 +84,12 @@ function parseFieldName(fieldName: string[]) {
 		return field;
 	});
 	return fieldName;
+}
+
+function preserveValueType(value: string, originalValue: unknown): unknown {
+	if (originalValue === null) return null;
+	if (typeof originalValue === 'number') return parseFloat(value);
+	return value;
 }
 
 export const fieldValueGetter = (disableDotNotation?: boolean) => {
@@ -218,6 +225,7 @@ function aggregateData(
 }
 
 export function splitData(
+	// [ria] check here 28-Jan-2025
 	splitKeys: string[],
 	data: IDataObject[],
 	fieldsToSummarize: Aggregations,
@@ -268,9 +276,12 @@ export function aggregationToArray(
 
 	if (isNext === undefined) {
 		for (const fieldName of Object.keys(aggregationResult)) {
+			// [ria] this introduces the problem as it returns a string array:
+			// Returns the names of the enumerable string properties and methods of an object.
+
 			returnData.push({
 				...previousStage,
-				[splitFieldName]: fieldName,
+				[splitFieldName]: fieldName, // [ria] example: fieldName is '0','1' or 'null'
 				...(aggregationResult[fieldName] as IDataObject),
 			});
 		}

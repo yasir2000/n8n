@@ -17,6 +17,7 @@ import {
 	splitData,
 } from './utils';
 import { generatePairedItemData } from '../../../utils/utilities';
+import { fields } from '../../Contentful/AssetDescription';
 
 export class Summarize implements INodeType {
 	description: INodeTypeDescription = {
@@ -288,10 +289,11 @@ export class Summarize implements INodeType {
 
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
-		const newItems = items.map(({ json }, i) => ({ ...json, _itemIndex: i }));
+		const newItems = items.map(({ json }, i) => ({ ...json, _itemIndex: i })); // [ria] need this ?
 
 		const options = this.getNodeParameter('options', 0, {}) as SummarizeOptions;
 
+		//[ria] example = ['Group', 'firstname']
 		const fieldsToSplitBy = (this.getNodeParameter('fieldsToSplitBy', 0, '') as string)
 			.split(',')
 			.map((field) => field.trim())
@@ -335,7 +337,6 @@ export class Summarize implements INodeType {
 			options,
 			getValue,
 		);
-
 		if (options.outputFormat === 'singleItem') {
 			const executionData: INodeExecutionData = {
 				json: aggregationResult,
@@ -346,7 +347,6 @@ export class Summarize implements INodeType {
 			return [[executionData]];
 		} else {
 			if (!fieldsToSplitBy.length) {
-				// [ria] if no fields to split by
 				const { pairedItems, ...json } = aggregationResult;
 				const executionData: INodeExecutionData = {
 					json,
@@ -356,7 +356,8 @@ export class Summarize implements INodeType {
 				};
 				return [[executionData]];
 			}
-			const returnData = aggregationToArray(aggregationResult, fieldsToSplitBy); // [ria] change here !!
+			const returnData = aggregationToArray(aggregationResult, fieldsToSplitBy);
+
 			const executionData = returnData.map((item) => {
 				const { pairedItems, ...json } = item;
 				return {
