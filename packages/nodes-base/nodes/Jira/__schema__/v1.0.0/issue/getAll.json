@@ -1,0 +1,131 @@
+{
+	"type": "object",
+	"properties": {
+		"expand": {
+			"type": "string"
+		},
+		"id": {
+			"type": "string"
+		},
+		"self": {
+			"type": "string"
+		},
+		"key": {
+			"type": "string"
+		},
+		"fields": {
+			"type": "object",
+			"properties": {
+				"summary": {
+					"type": "string"
+				},
+				"priority": {
+					"type": "object",
+					"properties": {
+						"self": {
+							"type": "string"
+						},
+						"iconUrl": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"self",
+						"iconUrl",
+						"name",
+						"id"
+					]
+				},
+				"status": {
+					"type": "object",
+					"properties": {
+						"self": {
+							"type": "string"
+						},
+						"description": {
+							"type": "string"
+						},
+						"iconUrl": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"statusCategory": {
+							"type": "object",
+							"properties": {
+								"self": {
+									"type": "string"
+								},
+								"id": {
+									"type": "integer"
+								},
+								"key": {
+									"type": "string"
+								},
+								"colorName": {
+									"type": "string"
+								},
+								"name": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"self",
+								"id",
+								"key",
+								"colorName",
+								"name"
+							]
+						}
+					},
+					"required": [
+						"self",
+						"description",
+						"iconUrl",
+						"name",
+						"id",
+						"statusCategory"
+					]
+				},
+				"components": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"self": {
+								"type": "string"
+							},
+							"id": {
+								"type": "string"
+							},
+							"name": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"self",
+							"id",
+							"name"
+						]
+					}
+				}
+			}
+		}
+	},
+	"required": [
+		"expand",
+		"id",
+		"self",
+		"key"
+	]
+}
