@@ -7,6 +7,7 @@ import { Service } from '@n8n/di';
 import get from 'lodash/get';
 import {
 	ErrorReporter,
+	ExecuteContext,
 	Logger,
 	NodeExecuteFunctions,
 	RoutingNode,
@@ -29,6 +30,7 @@ import type {
 	INodeTypes,
 	ICredentialTestFunctions,
 	IDataObject,
+	IExecuteData,
 } from 'n8n-workflow';
 import { VersionedNodeType, NodeHelpers, Workflow, ApplicationError } from 'n8n-workflow';
 
@@ -293,25 +295,25 @@ export class CredentialsTester {
 
 		const additionalData = await WorkflowExecuteAdditionalData.getBase(user.id, node.parameters);
 
-		const routingNode = new RoutingNode(
+		// TODO: define `credentialTestFunction` for declarative nodes, to make this method smaller
+		const executeData: IExecuteData = { node, data: {}, source: null };
+		const executeFunctions = new ExecuteContext(
 			workflow,
 			node,
-			connectionInputData,
-			runExecutionData ?? null,
 			additionalData,
 			mode,
+			runExecutionData,
+			runIndex,
+			connectionInputData,
+			inputData,
+			executeData,
+			[],
 		);
+		const routingNode = new RoutingNode(executeFunctions, nodeTypeCopy, credentialsDecrypted);
 
 		let response: INodeExecutionData[][] | null | undefined;
-
 		try {
-			response = await routingNode.runNode(
-				inputData,
-				runIndex,
-				nodeTypeCopy,
-				{ node, data: {}, source: null },
-				credentialsDecrypted,
-			);
+			response = await routingNode.runNode();
 		} catch (error) {
 			this.errorReporter.error(error);
 			// Do not fail any requests to allow custom error messages and
