@@ -22,5 +22,8 @@
   "scripts": {
     "clean": "rimraf .turbo",
     "test": "jest"
+  },
+  "dependencies": {
+    "@n8n_io/eslint-config": "file:"
   }
 }
